@@ -1,0 +1,9 @@
+.DS_Store
+.idea
+.vscode
+*.pyc
+*.iml
+
+/tester
+/java/target/*
+!/java/target/*.jar
