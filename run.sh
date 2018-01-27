@@ -39,5 +39,10 @@ function row() {
     printf "$template" "$1" "$2" "$bblfshd" "$driver" "$native" "$naive" "$naiveHost"
 }
 
+row python small.py
+row python medium.py
 row python large.py
+
+row java small.java
+row java medium.java
 row java large.java
