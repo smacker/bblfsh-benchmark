@@ -1,13 +1,13 @@
 package main
 
 import (
+	"bufio"
 	"bytes"
 	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"math"
 	"os/exec"
 	"strconv"
@@ -65,9 +65,27 @@ func nativeTest(container string) {
 	}
 
 	cmd := exec.Command("docker", "exec", "-i", container, "/opt/driver/bin/native")
+
 	stdin, err := cmd.StdinPipe()
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
+	}
+	stdout, err := cmd.StdoutPipe()
+	if err != nil {
+		panic(err)
+	}
+	cmd.Start()
+
+	reader := bufio.NewReader(stdout)
+
+	// warm up
+	go func() {
+		io.Copy(stdin, bytes.NewReader(b))
+		io.WriteString(stdin, "\n")
+	}()
+	_, err = reader.ReadString('\n')
+	if err != nil {
+		panic(err)
 	}
 
 	st := time.Now()
@@ -78,9 +96,15 @@ func nativeTest(container string) {
 			io.WriteString(stdin, "\n")
 		}
 	}()
-	_, err = cmd.CombinedOutput()
-	if err != nil {
-		log.Fatal(err)
+
+	for {
+		_, err := reader.ReadString('\n')
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			panic(err)
+		}
 	}
 	fmt.Println(time.Now().Sub(st))
 }
