@@ -12,6 +12,14 @@ Set environment variables to control `run.sh`:
 * `COUNT` - how many times run process file
 * `ON_HOST` - run naive parser on host machine
 
+Columns:
+
+* `bblfshd` - grpc calls to bblfsh server using client-go
+* `driver` - grpc calls to bblfsh driver using client-go (speaks the same protocol)
+* `native` - writes file multiple times to stdin of native driver
+* `naive` - the simplest ast parser I came up with, run on docker
+* `naive-on-host` - same as previous one but without docker
+
 ### Results on my machine:
 
 ```
