@@ -26,20 +26,26 @@ Columns:
 $ ON_HOST=1 bash ./run.sh
 Process 5 times each file
   language         fixture         bblfshd          driver          native           naive   naive-on-host
-    python        small.py     56.741761ms     43.109003ms     46.919337ms         2.815ms         2.808ms
-    python       medium.py     842.48126ms    800.104448ms    460.084112ms        70.754ms        55.318ms
-    python        large.py    1.436457877s    1.392802752s    761.553782ms       114.116ms        98.076ms
-      java      small.java     46.870115ms     30.450545ms     63.084239ms           553ms           399ms
-      java     medium.java    336.276353ms    310.757303ms    197.141397ms           678ms           475ms
-      java      large.java    905.540695ms    830.926882ms    378.289634ms           827ms           620ms
+    python        small.py     51.743598ms     43.225469ms     56.703523ms         2.691ms         2.352ms
+    python       medium.py    806.355035ms    803.425679ms    441.251012ms        67.363ms        54.213ms
+    python        large.py    1.398134455s    1.282806754s    752.523999ms       113.148ms          96.4ms
+      java      small.java     39.815334ms     39.289481ms     65.450402ms           391ms           396ms
+      java     medium.java    334.004609ms    357.028112ms    159.962666ms           454ms           492ms
+      java      large.java    991.674238ms    877.198939ms    248.035139ms           594ms           722ms
+javascript        small.js     50.564519ms     32.120037ms     49.057117ms             N/A             N/A
+javascript       medium.js    417.411635ms    361.938494ms    158.403883ms             N/A             N/A
+javascript        large.js    3.402788377s     3.34308053s    494.037411ms             N/A             N/A
 
 $ COUNT=100 ON_HOST=1 bash ./run.sh
 Process 100 times each file
   language         fixture         bblfshd          driver          native           naive   naive-on-host
-    python        small.py    1.019839101s    959.819475ms    403.639806ms        60.176ms        45.874ms
-    python       medium.py   18.299109026s   17.611896166s    8.670838679s       428.909ms       114.229ms
-    python        large.py   28.221796248s   26.348178298s   13.894410682s       184.779ms       943.968ms
-      java      small.java    762.522548ms    610.571072ms    474.168305ms           829ms           611ms
-      java     medium.java    6.345935358s    5.524509815s    1.400566447s          1323ms          1078ms
-      java      large.java   17.147798252s   15.514799861s    2.985042307s          2050ms          1555ms
+    python        small.py    929.210453ms     815.99546ms    363.143593ms        51.176ms        41.474ms
+    python       medium.py   16.303130809s   15.879994577s    8.145181101s       313.333ms       133.751ms
+    python        large.py   27.653217612s   26.438660983s    13.64112638s       191.035ms       915.243ms
+      java      small.java    740.419561ms    674.744789ms    487.885381ms           619ms           604ms
+      java     medium.java    6.289137615s    6.015788445s    1.339974701s          1192ms          1073ms
+      java      large.java   17.755939238s   15.690162174s    2.844574127s          1844ms          1635ms
+javascript        small.js    732.852371ms    612.092082ms    224.231675ms             N/A             N/A
+javascript       medium.js    7.677477849s    7.482421823s    998.785937ms             N/A             N/A
+javascript        large.js  1m6.400202811s  1m4.000824787s    7.639953592s             N/A             N/A
 ```
