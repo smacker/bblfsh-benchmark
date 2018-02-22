@@ -3,7 +3,7 @@
 ### how to run
 
 ```bash
-$ docker-compose up
+$ docker-compose pull && docker-compose up
 $ ./run.sh
 ```
 
