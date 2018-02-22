@@ -11,6 +11,7 @@ ports=(
     ["bblfshd"]="9800"
     ["python-driver"]="9801"
     ["java-driver"]="9802"
+    ["javascript-driver"]="9803"
 )
 declare -A naive_commands
 naive_commands=(
@@ -31,9 +32,12 @@ function row() {
     bblfshd=`./tester --language $1 --path fixtures/$2 --times $COUNT --port "${ports[bblfshd]}"`
     driver=`./tester --language $1 --path fixtures/$2 --times $COUNT --port "${ports[$1-driver]}"`
     native=`./tester --language $1 --path fixtures/$2 --times $COUNT --native "bblfshbenchmark_$1-driver_1"`
-    naive=`docker exec bblfshbenchmark_$1-naive_1 /bin/sh -c "${naive_commands[$1]} /fixtures/$2 $COUNT"`
+    naive="N/A"
+    if [[ "${naive_commands[$1]}" != "" ]]; then
+        naive=`docker exec bblfshbenchmark_$1-naive_1 /bin/sh -c "${naive_commands[$1]} /fixtures/$2 $COUNT"`
+    fi
     naiveHost="N/A"
-    if [[ "$ON_HOST" != "0" ]]; then
+    if [[ "$ON_HOST" != "0" && "${naive_commands[$1]}" != "" ]]; then
         naiveHost=`${naive_host_commands[$1]} fixtures/$2 $COUNT`
     fi
     printf "$template" "$1" "$2" "$bblfshd" "$driver" "$native" "$naive" "$naiveHost"
@@ -46,3 +50,7 @@ row python large.py
 row java small.java
 row java medium.java
 row java large.java
+
+row javascript small.js
+row javascript medium.js
+row javascript large.js

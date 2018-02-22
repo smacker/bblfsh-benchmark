@@ -1,7 +1,7 @@
 version: '3'
 services:
   bblfshd:
-    image: "bblfsh/bblfshd"
+    image: "bblfsh/bblfshd:latest"
     privileged: true
     entrypoint: "/bin/sh"
     command: ["/start-bblfshd.sh"]
@@ -10,13 +10,17 @@ services:
     ports:
       - "9800:9432"
   python-driver:
-    image: "bblfsh/python-driver"
+    image: "bblfsh/python-driver:latest"
     ports:
       - "9801:9432"
   java-driver:
-    image: "bblfsh/java-driver"
+    image: "bblfsh/java-driver:latest"
     ports:
       - "9802:9432"
+  javascript-driver:
+    image: "bblfsh/javascript-driver:latest"
+    ports:
+      - "9803:9432"
   python-naive:
     build: ./python
     volumes:
