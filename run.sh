@@ -31,10 +31,10 @@ printf "$template" "language" "fixture" "bblfshd" "driver" "native" "naive" "nai
 function row() {
     bblfshd=`./tester --language $1 --path fixtures/$2 --times $COUNT --port "${ports[bblfshd]}"`
     driver=`./tester --language $1 --path fixtures/$2 --times $COUNT --port "${ports[$1-driver]}"`
-    native=`./tester --language $1 --path fixtures/$2 --times $COUNT --native "bblfshbenchmark_$1-driver_1"`
+    native=`./tester --language $1 --path fixtures/$2 --times $COUNT --native "bblfsh-benchmark_$1-driver_1"`
     naive="N/A"
     if [[ "${naive_commands[$1]}" != "" ]]; then
-        naive=`docker exec bblfshbenchmark_$1-naive_1 /bin/sh -c "${naive_commands[$1]} /fixtures/$2 $COUNT"`
+        naive=`docker exec bblfsh-benchmark_$1-naive_1 /bin/sh -c "${naive_commands[$1]} /fixtures/$2 $COUNT"`
     fi
     naiveHost="N/A"
     if [[ "$ON_HOST" != "0" && "${naive_commands[$1]}" != "" ]]; then
