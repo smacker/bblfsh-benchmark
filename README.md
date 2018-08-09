@@ -1,5 +1,7 @@
 # Benchmarks for bblfsh
 
+_Note:_ According to the benchmarks drivers v2 are slower about two times than v1 (using v1 protocol in both cases).
+
 ### how to run
 
 ```bash
@@ -26,26 +28,26 @@ Columns:
 $ ON_HOST=1 bash ./run.sh
 Process 5 times each file
   language         fixture         bblfshd          driver          native           naive   naive-on-host
-    python        small.py     50.018363ms     38.327857ms     62.582703ms         2.973ms         2.438ms
-    python       medium.py    769.000307ms    700.378132ms    470.544701ms        63.529ms        56.479ms
-    python        large.py    1.275609266s    1.208969896s    743.146561ms        108.06ms        98.175ms
-      java      small.java     79.420286ms      61.27143ms     97.523015ms           565ms           392ms
-      java     medium.java    434.359772ms    818.780743ms    230.666002ms           649ms           474ms
-      java      large.java    1.055102355s    926.712473ms    438.603635ms           804ms           601ms
-javascript        small.js     51.882459ms     45.574277ms      38.25892ms             N/A             N/A
-javascript       medium.js     459.00891ms    477.979698ms    115.557562ms             N/A             N/A
-javascript        large.js    3.350241623s    3.092466151s    518.193587ms             N/A             N/A
+    python        small.py    113.037482ms     83.644261ms     51.002653ms         2.739ms         2.377ms
+    python       medium.py    1.408386861s    1.369003541s    519.218594ms        78.837ms        59.981ms
+    python        large.py    2.225748945s    2.073929824s     762.24393ms        114.07ms        93.727ms
+      java      small.java     95.585916ms    134.532064ms    105.850537ms           579ms           410ms
+      java     medium.java    775.441605ms    752.145964ms    160.716846ms           660ms           488ms
+      java      large.java    1.993296527s    1.777951175s    308.589848ms           889ms           608ms
+javascript        small.js     59.031241ms      53.34129ms     42.602787ms             N/A             N/A
+javascript       medium.js    798.804496ms    715.325667ms    113.373702ms             N/A             N/A
+javascript        large.js    5.455405503s     5.19979398s    441.042201ms             N/A             N/A
 
 $ COUNT=100 ON_HOST=1 bash ./run.sh
 Process 100 times each file
   language         fixture         bblfshd          driver          native           naive   naive-on-host
-    python        small.py    876.589984ms    864.273892ms    367.053954ms        53.373ms        41.943ms
-    python       medium.py    15.44547128s   14.506398946s    8.138650093s       238.057ms        98.578ms
-    python        large.py   25.603619179s   24.060433655s   13.597760383s       140.954ms       883.599ms
-      java      small.java    832.753743ms    714.972591ms    570.079146ms           821ms           615ms
-      java     medium.java    6.633346407s    6.105927809s    1.541059131s          1337ms          1066ms
-      java      large.java   18.244999317s   16.653970706s     2.90125654s          1833ms          1571ms
-javascript        small.js    691.724174ms    600.730657ms    154.411162ms             N/A             N/A
-javascript       medium.js    7.731778101s    7.154430796s    1.076294969s             N/A             N/A
-javascript        large.js  1m2.024899947s   58.445313369s     8.07498884s             N/A             N/A
+    python        small.py    1.492257054s     1.30530313s    384.987717ms         52.52ms        48.358ms
+    python       medium.py   26.437739908s   27.657225961s    9.932052044s       404.753ms        230.46ms
+    python        large.py   45.335606032s    42.49090653s    16.88422919s       156.429ms       873.311ms
+      java      small.java    1.196784444s    1.099890111s    482.384224ms           767ms           806ms
+      java     medium.java   14.440852591s    15.99131951s    2.057669402s          1458ms          1141ms
+      java      large.java   42.868031931s   34.986266717s    3.982363582s          2388ms          1614ms
+javascript        small.js    1.144964133s    982.114736ms    185.275143ms             N/A             N/A
+javascript       medium.js   14.354297118s   13.033709737s    830.110305ms             N/A             N/A
+javascript        large.js  1m53.45431482s 1m42.821524276s    6.280967982s             N/A             N/A
 ```
