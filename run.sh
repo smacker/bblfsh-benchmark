@@ -24,10 +24,10 @@ naive_host_commands=(
     ["java"]="java -jar java/target/native-jar-with-dependencies.jar"
 )
 
-template="%10s %15s %15s %15s %15s %15s %15s\n"
+template="%10s %15s %15s %15s %15s %15s %15s %15s\n"
 
 echo "Process $COUNT times each file"
-printf "$template" "language" "fixture" "bblfshd" "driver" "native" "naive" "naive-on-host"
+printf "$template" "language" "fixture" "bblfshd" "driver" "native" "naive" "naive-on-host" "go-tree-sitter"
 function row() {
     bblfshd=`./tester --language $1 --path fixtures/$2 --times $COUNT --port "${ports[bblfshd]}"`
     driver=`./tester --language $1 --path fixtures/$2 --times $COUNT --port "${ports[$1-driver]}"`
@@ -40,7 +40,8 @@ function row() {
     if [[ "$ON_HOST" != "0" && "${naive_commands[$1]}" != "" ]]; then
         naiveHost=`${naive_host_commands[$1]} fixtures/$2 $COUNT`
     fi
-    printf "$template" "$1" "$2" "$bblfshd" "$driver" "$native" "$naive" "$naiveHost"
+    treeSitter=`./tester --language $1 --path fixtures/$2 --times $COUNT --tree-sitter`
+    printf "$template" "$1" "$2" "$bblfshd" "$driver" "$native" "$naive" "$naiveHost" "$treeSitter"
 }
 
 row python small.py

@@ -15,6 +15,10 @@ import (
 	"time"
 
 	bblfsh "gopkg.in/bblfsh/client-go.v3"
+	sitter "github.com/smacker/go-tree-sitter"
+	"github.com/smacker/go-tree-sitter/java"
+	"github.com/smacker/go-tree-sitter/javascript"
+	"github.com/smacker/go-tree-sitter/python"
 )
 
 var path = flag.String("path", "", "path to file")
@@ -23,12 +27,18 @@ var times = flag.Int("times", 500, "number of parses")
 var parallel = flag.Int("parallel", 0, "")
 var port = flag.Int("port", 0, "")
 var native = flag.String("native", "", "name of container to test native driver")
+var treeSitter = flag.Bool("tree-sitter", false, "")
 
 func main() {
 	flag.Parse()
 
 	if *native != "" {
 		nativeTest(*native)
+		return
+	}
+
+	if *treeSitter {
+		runSitter()
 		return
 	}
 
@@ -109,6 +119,31 @@ func nativeTest(container string) {
 	fmt.Println(time.Now().Sub(st))
 }
 
+var sitterLangMap = map[string]*sitter.Language{
+	"python":     python.GetLanguage(),
+	"java":       java.GetLanguage(),
+	"javascript": javascript.GetLanguage(),
+}
+
+func runSitter() {
+	if *language == "" {
+		panic("no language")
+	}
+
+	parser := sitter.NewParser()
+	parser.SetLanguage(sitterLangMap[*language])
+
+	content := []byte(getContent(*path))
+	// warm up
+	_ = parser.Parse(content)
+
+	st := time.Now()
+	for i := 0; i < *times; i++ {
+		_ = parser.Parse(content)
+	}
+	fmt.Println(time.Now().Sub(st))
+}
+
 type Client struct {
 	client *bblfsh.Client
 }
@@ -123,7 +158,7 @@ func NewClient(port int) *Client {
 }
 
 func (c *Client) Consequentially(path, language string, times int) time.Duration {
-	content := c.getContent(path)
+	content := getContent(path)
 
 	st := time.Now()
 
@@ -139,7 +174,7 @@ func (c *Client) Consequentially(path, language string, times int) time.Duration
 }
 
 func (c *Client) Parallel(path, language string, times, parallel int) time.Duration {
-	content := c.getContent(path)
+	content := getContent(path)
 
 	times = int(math.Ceil(float64(times) / float64(parallel)))
 	var wg sync.WaitGroup
@@ -163,7 +198,7 @@ func (c *Client) Parallel(path, language string, times, parallel int) time.Durat
 	return time.Now().Sub(st)
 }
 
-func (c *Client) getContent(path string) string {
+func getContent(path string) string {
 	b, err := ioutil.ReadFile(path)
 	if err != nil {
 		panic(err)

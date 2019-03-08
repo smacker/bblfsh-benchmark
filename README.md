@@ -1,6 +1,6 @@
 # Benchmarks for bblfsh
 
-_Note:_ According to the benchmarks drivers v2 are slower about two times than v1.
+Mesure bblfsh overhead compare to native parser and tree-sitter.
 
 ### how to run
 
@@ -21,34 +21,35 @@ Columns:
 * `native` - writes file multiple times to stdin of native driver
 * `naive` - the simplest ast parser I came up with, run on docker
 * `naive-on-host` - same as previous one but without docker
+* `go-tree-sitter` - use [go bindings](https://github.com/smacker/go-tree-sitter) to [tree-sitter](https://github.com/tree-sitter/tree-sitter)
 
 ### Results on my machine:
 
 ```
 $ ON_HOST=1 bash ./run.sh
 Process 5 times each file
-  language         fixture         bblfshd          driver          native           naive   naive-on-host
-    python        small.py    104.513341ms     70.359426ms     84.412696ms         3.603ms          3.06ms
-    python       medium.py    1.434026919s    1.361810796s    621.382857ms        82.287ms        56.231ms
-    python        large.py    2.238042851s    2.328555477s    921.827309ms       136.489ms        90.404ms
-      java      small.java    156.962567ms    115.947404ms    149.711802ms           761ms           531ms
-      java     medium.java    724.721846ms    868.051587ms    327.612868ms           929ms           482ms
-      java      large.java    1.624739807s    1.592108453s    548.594095ms          1059ms           605ms
-javascript        small.js     158.19833ms    152.655977ms     87.472874ms             N/A             N/A
-javascript       medium.js    908.064627ms     923.07357ms    251.559531ms             N/A             N/A
-javascript        large.js    7.364783215s    6.453128516s    626.814047ms             N/A             N/A
+  language         fixture         bblfshd          driver          native           naive   naive-on-host  go-tree-sitter
+    python        small.py      59.10137ms     42.014634ms      84.21925ms          3.58ms         2.762ms      550.371µs
+    python       medium.py    730.150815ms    729.288617ms    611.847338ms        82.215ms        54.739ms     15.530973ms
+    python        large.py    1.150602363s    1.154730518s    931.864116ms       134.487ms        90.282ms     26.114348ms
+      java      small.java     56.840603ms     41.636917ms    137.319559ms           785ms           520ms      486.784µs
+      java     medium.java     373.38844ms    362.152399ms    277.792368ms           886ms           466ms      6.793929ms
+      java      large.java    925.527857ms    979.785512ms    387.941378ms          1109ms           624ms     19.834719ms
+javascript        small.js     45.961269ms      27.30678ms     82.676786ms             N/A             N/A      283.666µs
+javascript       medium.js      254.6304ms    261.169542ms    164.598177ms             N/A             N/A      7.162936ms
+javascript        large.js    1.835414117s    1.786695238s    501.930811ms             N/A             N/A     40.761878ms
 
 
 $ COUNT=100 ON_HOST=1 bash ./run.sh
 Process 100 times each file
-  language         fixture         bblfshd          driver          native           naive   naive-on-host
-    python        small.py     1.96979725s    1.798308185s    603.633402ms        69.124ms        46.292ms
-    python       medium.py   28.846915992s   27.890701959s   11.347615686s       571.396ms        46.084ms
-    python        large.py   45.007683765s   45.632372333s   17.624723382s       734.178ms       780.307ms
-      java      small.java     1.74572002s    1.489998826s    651.211843ms          1148ms           763ms
-      java     medium.java   11.703973963s   11.462978285s    2.073788281s          1587ms          1040ms
-      java      large.java   30.309241377s   30.144050923s    3.774792657s          2469ms          1649ms
-javascript        small.js    1.512326812s    1.239894324s    204.323864ms             N/A             N/A
-javascript       medium.js   16.420600669s   15.755297156s     1.10123314s             N/A             N/A
-javascript        large.js  2m3.068879896s  2m3.564357892s     5.70595184s             N/A             N/A
+  language         fixture         bblfshd          driver          native           naive   naive-on-host  go-tree-sitter
+    python        small.py    1.079530842s    951.732776ms     496.97266ms        66.981ms          62.3ms     17.947399ms
+    python       medium.py   16.580967699s    15.30512511s    11.38071154s       660.534ms        87.742ms    333.089036ms
+    python        large.py   23.077634855s   23.000140787s   17.953921045s       657.431ms       855.178ms    554.306883ms
+      java      small.java     1.01676893s    924.874297ms    742.826628ms          1166ms           621ms      8.143652ms
+      java     medium.java    8.302661273s    9.015791504s    2.231004422s          1756ms          1353ms    180.167101ms
+      java      large.java   23.286575316s   21.001132587s    5.846483831s          3192ms          2031ms    426.856856ms
+javascript        small.js    936.368807ms    1.138111259s    294.129059ms             N/A             N/A      7.987509ms
+javascript       medium.js    9.023018705s    8.008308402s    1.274347629s             N/A             N/A     119.60978ms
+javascript        large.js   39.277155259s   36.693041699s    5.515874603s             N/A             N/A    719.868076ms
 ```
