@@ -128,7 +128,7 @@ func (c *Client) Consequentially(path, language string, times int) time.Duration
 	st := time.Now()
 
 	for i := 0; i < times; i++ {
-		r, err := c.client.NewParseRequestV2().Language(language).Content(content).Do()
+		r, err := c.client.NewParseRequestV2().Language(language).Mode(bblfsh.Native).Content(content).Do()
 
 		if err != nil {
 			panic(err)
@@ -153,7 +153,7 @@ func (c *Client) Parallel(path, language string, times, parallel int) time.Durat
 		wg.Add(1)
 		go func() {
 			for i := 0; i < times; i++ {
-				_, err := c.client.NewParseRequestV2().Language(language).Content(content).Do()
+				_, err := c.client.NewParseRequestV2().Language(language).Mode(bblfsh.Native).Content(content).Do()
 				if err != nil {
 					panic(err)
 				}
