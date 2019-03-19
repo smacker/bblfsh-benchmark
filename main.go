@@ -130,11 +130,11 @@ func (c *Client) Consequentially(path, language string, times int) time.Duration
 	for i := 0; i < times; i++ {
 		r, err := c.client.NewParseRequestV2().Language(language).Content(content).Do()
 
-		if len(r.Errors) > 0 {
-			panic(r.Errors)
-		}
 		if err != nil {
 			panic(err)
+		}
+		if len(r.Errors) > 0 {
+			panic(r.Errors)
 		}
 	}
 
