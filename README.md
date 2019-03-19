@@ -1,6 +1,6 @@
 # Benchmarks for bblfsh
 
-_Note:_ According to the benchmarks drivers v2 are slower about two times than v1 (using v1 protocol in both cases).
+_Note:_ According to the benchmarks drivers v2 are slower about two times than v1.
 
 ### how to run
 

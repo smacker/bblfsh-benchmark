@@ -14,7 +14,7 @@ import (
 	"sync"
 	"time"
 
-	bblfsh "gopkg.in/bblfsh/client-go.v2"
+	bblfsh "gopkg.in/bblfsh/client-go.v3"
 )
 
 var path = flag.String("path", "", "path to file")
@@ -128,13 +128,10 @@ func (c *Client) Consequentially(path, language string, times int) time.Duration
 	st := time.Now()
 
 	for i := 0; i < times; i++ {
-		r, err := c.client.NewParseRequestV2().Language(language).Mode(bblfsh.Native).Content(content).Do()
+		_, _, err := c.client.NewParseRequest().Language(language).Mode(bblfsh.Native).Content(content).UAST()
 
 		if err != nil {
 			panic(err)
-		}
-		if len(r.Errors) > 0 {
-			panic(r.Errors)
 		}
 	}
 
@@ -153,7 +150,7 @@ func (c *Client) Parallel(path, language string, times, parallel int) time.Durat
 		wg.Add(1)
 		go func() {
 			for i := 0; i < times; i++ {
-				_, err := c.client.NewParseRequestV2().Language(language).Mode(bblfsh.Native).Content(content).Do()
+				_, _, err := c.client.NewParseRequest().Language(language).Mode(bblfsh.Native).Content(content).UAST()
 				if err != nil {
 					panic(err)
 				}
