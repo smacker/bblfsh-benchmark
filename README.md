@@ -16,7 +16,8 @@ Set environment variables to control `run.sh`:
 
 Columns:
 
-* `bblfshd` - grpc calls to bblfsh server using client-go
+* `semantic` - grpc calls to bblfsh server using client-go with semantic mode
+* `bblfshd` - grpc calls to bblfsh server using client-go with native mode
 * `driver` - grpc calls to bblfsh driver using client-go (speaks the same protocol)
 * `native` - writes file multiple times to stdin of native driver
 * `naive` - the simplest ast parser I came up with, run on docker
@@ -28,16 +29,16 @@ Columns:
 ```
 $ ON_HOST=1 bash ./run.sh
 Process 5 times each file
-  language         fixture         bblfshd          driver          native           naive   naive-on-host  go-tree-sitter
-    python        small.py      59.10137ms     42.014634ms      84.21925ms          3.58ms         2.762ms      550.371µs
-    python       medium.py    730.150815ms    729.288617ms    611.847338ms        82.215ms        54.739ms     15.530973ms
-    python        large.py    1.150602363s    1.154730518s    931.864116ms       134.487ms        90.282ms     26.114348ms
-      java      small.java     56.840603ms     41.636917ms    137.319559ms           785ms           520ms      486.784µs
-      java     medium.java     373.38844ms    362.152399ms    277.792368ms           886ms           466ms      6.793929ms
-      java      large.java    925.527857ms    979.785512ms    387.941378ms          1109ms           624ms     19.834719ms
-javascript        small.js     45.961269ms      27.30678ms     82.676786ms             N/A             N/A      283.666µs
-javascript       medium.js      254.6304ms    261.169542ms    164.598177ms             N/A             N/A      7.162936ms
-javascript        large.js    1.835414117s    1.786695238s    501.930811ms             N/A             N/A     40.761878ms
+  language         fixture        semantic         bblfshd          driver          native           naive   naive-on-host  go-tree-sitter
+    python        small.py    116.539749ms     48.942962ms     75.004011ms     92.446857ms         3.929ms         2.366ms       543.973µs
+    python       medium.py    1.599836916s     755.27236ms     979.88242ms    696.572664ms        89.275ms        66.455ms      19.01192ms
+    python        large.py    2.768434027s    1.177480743s    1.162664989s    1.008075686s       143.129ms        92.805ms     29.868624ms
+      java      small.java     80.484111ms     59.553298ms      37.44783ms    113.524303ms           791ms           382ms       410.546µs
+      java     medium.java    732.765797ms    417.917357ms    396.369231ms    304.240967ms           976ms           468ms      6.776931ms
+      java      large.java    1.804763297s    973.179411ms    1.024198953s    635.750094ms          1238ms           622ms     20.349097ms
+javascript        small.js     66.474485ms     59.514451ms     29.010792ms     79.058312ms             N/A             N/A       248.365µs
+javascript       medium.js    940.515048ms    275.866322ms    288.755713ms    191.805473ms             N/A             N/A      6.614362ms
+javascript        large.js    6.971718088s     1.97325413s    1.871911764s    506.326851ms             N/A             N/A     41.406852ms
 
 
 $ COUNT=100 ON_HOST=1 bash ./run.sh

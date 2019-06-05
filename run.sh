@@ -27,8 +27,9 @@ naive_host_commands=(
 template="%10s %15s %15s %15s %15s %15s %15s %15s\n"
 
 echo "Process $COUNT times each file"
-printf "$template" "language" "fixture" "bblfshd" "driver" "native" "naive" "naive-on-host" "go-tree-sitter"
+printf "$template" "language" "fixture" "semantic" "bblfshd" "driver" "native" "naive" "naive-on-host" "go-tree-sitter"
 function row() {
+    semantic=`./tester --language $1 --path fixtures/$2 --times $COUNT --semantic --port "${ports[bblfshd]}"`
     bblfshd=`./tester --language $1 --path fixtures/$2 --times $COUNT --port "${ports[bblfshd]}"`
     driver=`./tester --language $1 --path fixtures/$2 --times $COUNT --port "${ports[$1-driver]}"`
     native=`./tester --language $1 --path fixtures/$2 --times $COUNT --native "bblfsh-benchmark_$1-driver_1"`
@@ -41,7 +42,7 @@ function row() {
         naiveHost=`${naive_host_commands[$1]} fixtures/$2 $COUNT`
     fi
     treeSitter=`./tester --language $1 --path fixtures/$2 --times $COUNT --tree-sitter`
-    printf "$template" "$1" "$2" "$bblfshd" "$driver" "$native" "$naive" "$naiveHost" "$treeSitter"
+    printf "$template" "$1" "$2" "$semantic" "$bblfshd" "$driver" "$native" "$naive" "$naiveHost" "$treeSitter"
 }
 
 row python small.py

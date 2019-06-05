@@ -26,8 +26,11 @@ var language = flag.String("language", "", "")
 var times = flag.Int("times", 500, "number of parses")
 var parallel = flag.Int("parallel", 0, "")
 var port = flag.Int("port", 0, "")
+var semantic = flag.Bool("semantic", false, "")
 var native = flag.String("native", "", "name of container to test native driver")
 var treeSitter = flag.Bool("tree-sitter", false, "")
+
+var bblfshParseMode = bblfsh.Native
 
 func main() {
 	flag.Parse()
@@ -40,6 +43,10 @@ func main() {
 	if *treeSitter {
 		runSitter()
 		return
+	}
+
+	if *semantic {
+		bblfshParseMode = bblfsh.Semantic
 	}
 
 	grpc()
@@ -163,7 +170,7 @@ func (c *Client) Consequentially(path, language string, times int) time.Duration
 	st := time.Now()
 
 	for i := 0; i < times; i++ {
-		_, _, err := c.client.NewParseRequest().Language(language).Mode(bblfsh.Native).Content(content).UAST()
+		_, _, err := c.client.NewParseRequest().Language(language).Mode(bblfshParseMode).Content(content).UAST()
 
 		if err != nil {
 			panic(err)
@@ -185,7 +192,7 @@ func (c *Client) Parallel(path, language string, times, parallel int) time.Durat
 		wg.Add(1)
 		go func() {
 			for i := 0; i < times; i++ {
-				_, _, err := c.client.NewParseRequest().Language(language).Mode(bblfsh.Native).Content(content).UAST()
+				_, _, err := c.client.NewParseRequest().Language(language).Mode(bblfshParseMode).Content(content).UAST()
 				if err != nil {
 					panic(err)
 				}
